@@ -1,1 +1,46 @@
 /* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-display: swap;
+    font-family: "Brown-Pro";
+    font-style: normal;
+    font-weight: 100;
+    src: url("./assets/lineto-brown-pro/lineto-brown-pro-thin.woff")
+      format("woff");
+  }
+
+  @font-face {
+    font-display: swap;
+    font-family: "Brown-Pro";
+    font-style: normal;
+    font-weight: 300;
+    src: url("./assets/lineto-brown-pro/lineto-brown-pro-light.woff")
+      format("woff");
+  }
+
+  @font-face {
+    font-display: swap;
+    font-family: "Brown-Pro";
+    font-style: normal;
+    font-weight: 400;
+    src: url("./assets/lineto-brown-pro/lineto-brown-pro-regular.woff")
+      format("woff");
+  }
+
+  @font-face {
+    font-display: swap;
+    font-family: "Brown-Pro";
+    font-style: normal;
+    font-weight: 700;
+    src: url("./assets/lineto-brown-pro/lineto-brown-pro-bold.woff")
+      format("woff");
+  }
+
+  body {
+    @apply font-brown-pro font-normal;
+  }
+}

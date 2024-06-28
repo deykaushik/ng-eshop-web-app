@@ -1,0 +1,18 @@
+<header class="border-b-[0.5px] border-b-solid border-b-neutral-200">
+  <div class="mx-auto max-w-[1280px] h-[80px] px-5 flex-1 flex items-center gap-[30px]">
+    <nav class="flex flex-1 items-center justify-between">
+      <a class="[&.active]:text-purple-600"
+         routerLinkActive="active"
+         [routerLink]="'shop'">Shop</a>
+      <a class="[&.active]:text-purple-600 relative"
+         routerLinkActive="active"
+         [routerLink]="'cart'">
+        Cart
+        <span>({{currCartQty()}})</span>
+      </a>
+    </nav>
+  </div>
+</header>
+<main class="flex-1 w-full max-w-[1280px] px-5 py-10 mx-auto">
+  <router-outlet></router-outlet>
+</main>
