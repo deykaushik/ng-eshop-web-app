@@ -11,6 +11,5 @@ import { AppStateService } from '../services/app-state.service';
 })
 export class AppShellComponent {
   private _appState = inject(AppStateService);
-
-  currCartQty = this._appState.currCartQty;
+  cart = this._appState.cart;
 }

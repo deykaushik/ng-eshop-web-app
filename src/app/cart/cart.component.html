@@ -1,1 +1,51 @@
-<p>cart works!</p>
+@if(cartUpdateListener$ | async){}
+
+@if (cartDate$ | async; as cartData) {
+<div class="flex flex-col gap-[30px] pb-[100px]">
+  @for (product of cartData?.products; track $index) {
+  <div class="relative border border-solid border-slate-300 flex">
+
+    <div class="flex flex-1 gap-4">
+      <img class="bg-neutral-100"
+           [ngSrc]="product.thumbnail"
+           width="150"
+           height="150"
+           priority />
+      <div class="py-4 flex flex-col justify-between">
+        <div class="flex flex-col items">
+          <span class="font-semibold">{{product.title}}</span>
+          <span
+                class="py-1 px-2 w-[80px] flex justify-center bg-purple-200 text-purple-600 pointer-events-none">-{{product.discountPercentage}}%</span>
+        </div>
+        <input #quantityInput="ngModel"
+               class="outline-none w-20 h-10 p-4 text-center border border-solid border-slate-300"
+               [(ngModel)]="product.quantity"
+               [ngModelOptions]="{ updateOn: 'blur' }"
+               (ngModelChange)="onUpdate(quantityInput.value, product.id!)" />
+      </div>
+    </div>
+    <div class="flex flex-col justify-between p-4">
+      <a (click)="onRemove(product.id)"
+         class="cursor-pointer text-purple-600">Remove</a>
+      <div class="flex flex-col">
+        <span>Price:</span>
+        <span class="font-semibold">Rs {{product.price}}</span>
+      </div>
+    </div>
+  </div>
+  }
+</div>
+
+<div class="border-t border-slate-300 bg-white h-[100px] z-10 fixed left-0 w-full bottom-0">
+  <div class="flex-1 w-full max-w-[1280px] px-5 py-10 mx-auto">
+    <div class="font-bold text-2xl ">Total price: Rs <span>{{ cartData?.total?.toFixed(2)}}</span></div>
+  </div>
+</div>
+} @else {
+
+<div class="flex items-center flex-col gap-3">
+  <img width="100px"
+       src="./../../assets/icons/shopping-cart-2-line-black.svg" />
+  <p>No items in the cart yet</p>
+</div>
+}
