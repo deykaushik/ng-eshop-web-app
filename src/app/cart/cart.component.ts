@@ -1,33 +1,42 @@
-import { AsyncPipe, NgOptimizedImage } from '@angular/common';
+import { AsyncPipe, NgIf, NgOptimizedImage } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  OnInit,
   Signal,
   inject,
 } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
+import { BehaviorSubject, catchError, filter, of, switchMap, tap } from 'rxjs';
 import { EShopApiService } from '../api/eshop-api.service';
 import { ICartApiRes, IProductPost } from '../models/app.model';
-import { AppStateService } from '../services/app-state.service';
-import { BehaviorSubject, filter, switchMap, tap } from 'rxjs';
+import { AppStateService } from '../service/app-state.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { AppErrorHandler, DefaultErrorHanlder } from '../utils/error-handler';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [AsyncPipe, NgOptimizedImage, FormsModule],
+  imports: [AsyncPipe, NgOptimizedImage, FormsModule, NgIf],
   templateUrl: './cart.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    {
+      provide: AppErrorHandler,
+      useClass: DefaultErrorHanlder,
+    },
+  ],
 })
 export class CartComponent {
   private _eshopApi = inject(EShopApiService);
   private _appState = inject(AppStateService);
+  private _appErrorHandler = inject(AppErrorHandler);
+
   private _currCartProducts: IProductPost[] = [];
   private _updatedCartProductsSub = new BehaviorSubject<IProductPost[]>([]);
   private _cartData: Signal<ICartApiRes | null> = this._appState.cart;
 
-  cartDate$ = toObservable(this._cartData).pipe(
+  cartData$ = toObservable(this._cartData).pipe(
     tap((cart) => {
       this._currCartProducts =
         cart?.products?.map(
@@ -39,6 +48,10 @@ export class CartComponent {
   cartUpdateListener$ = this._updatedCartProductsSub.asObservable().pipe(
     filter((products) => !!products.length),
     switchMap((products) => this._eshopApi.addProductsToCart(products)),
+    catchError((err: HttpErrorResponse) => {
+      this._appErrorHandler.handleError(err);
+      return of({} as ICartApiRes);
+    }),
     tap((cartRes) => this._appState.updateCart(cartRes))
   );
 

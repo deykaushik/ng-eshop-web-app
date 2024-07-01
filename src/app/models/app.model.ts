@@ -14,7 +14,6 @@ export interface IProductPost {
 
 export interface IAppState {
   errorMessage: string | null;
-  currCartQty: number;
   cart: ICartApiRes | null;
 }
 

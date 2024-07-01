@@ -41,10 +41,7 @@ export class EShopApiService extends ApiBase {
       this._getCartUrl,
       { userId: USER_ID },
       null
-    ).pipe(
-      tap(console.log),
-      map((res) => res.products)
-    );
+    ).pipe(map((res) => res.products));
   }
 
   updateCart(payload: { merge: boolean; products: IProductPost[] }) {

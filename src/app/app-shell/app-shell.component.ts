@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { AppStateService } from '../services/app-state.service';
+import { AppStateService } from '../service/app-state.service';
 
 @Component({
   selector: 'app-shell',
@@ -11,5 +11,7 @@ import { AppStateService } from '../services/app-state.service';
 })
 export class AppShellComponent {
   private _appState = inject(AppStateService);
+
   cart = this._appState.cart;
+  errorMessage = this._appState.errorMessage;
 }
