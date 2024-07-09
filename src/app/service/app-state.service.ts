@@ -1,21 +1,35 @@
-import { Injectable, computed, signal } from '@angular/core';
-import { IAppState, ICartApiRes } from '../models/app.model';
+import { Injectable, signal } from '@angular/core';
+import { IProduct } from '../models/app.model';
 
 @Injectable({ providedIn: 'root' })
 export class AppStateService {
-  private _state = signal<IAppState>({
-    errorMessage: null,
-    cart: null,
-  });
+  readonly cartItems = signal<IProduct[]>([]);
+  readonly errorMessage = signal<string | null>(null);
 
-  errorMessage = computed(() => this._state().errorMessage);
-  cart = computed(() => this._state().cart);
-
-  updateErrorMessage(errorMessage: string) {
-    this._state.update((state) => ({ ...state, errorMessage }));
+  private _updateCartItems(products: IProduct[]) {
+    this.cartItems.update(() => products.filter((item) => !!item.quantity));
   }
 
-  updateCart(cart: ICartApiRes) {
-    this._state.update((state) => ({ ...state, cart }));
+  setErrorMessage(message: string | null) {
+    this.errorMessage.update(() => message);
+  }
+
+  addToCart(product: IProduct, quantity: number, isEdit: boolean = false) {
+    const currCartItems = this.cartItems();
+    const existingProductIndex = currCartItems.findIndex(
+      (item) => item.id === product.id
+    );
+    if (existingProductIndex !== -1) {
+      const matchedProduct = currCartItems[existingProductIndex];
+      if (isEdit) {
+        matchedProduct.quantity = +quantity;
+      } else {
+        matchedProduct.quantity = (matchedProduct.quantity || 0) + 1;
+      }
+    } else {
+      currCartItems.push({ ...product, quantity: +quantity });
+    }
+
+    this._updateCartItems(currCartItems);
   }
 }

@@ -40,36 +40,4 @@ export class ApiBase {
       params: urlQueryParams,
     });
   }
-
-  protected postData(
-    url: string,
-    routeParams: ParamsType = null,
-    queryParams: ParamsType = null,
-    payload: any
-  ) {
-    const routeUrl = routeParams
-      ? ApiBase.createRouteUrl(routeParams, url)
-      : url;
-    const urlQueryParams = ApiBase.createQueryParams(queryParams || {});
-
-    return this.http.post(`${this.apiBaseUrl}${routeUrl}`, payload, {
-      params: urlQueryParams,
-    });
-  }
-
-  protected putData(
-    url: string,
-    routeParams: ParamsType = null,
-    queryParams: ParamsType = null,
-    payload: any
-  ) {
-    const routeUrl = routeParams
-      ? ApiBase.createRouteUrl(routeParams, url)
-      : url;
-    const urlQueryParams = ApiBase.createQueryParams(queryParams || {});
-
-    return this.http.put(`${this.apiBaseUrl}${routeUrl}`, payload, {
-      params: urlQueryParams,
-    });
-  }
 }

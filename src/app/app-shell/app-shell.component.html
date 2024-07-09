@@ -8,7 +8,7 @@
          routerLinkActive="active"
          [routerLink]="'cart'">
         Cart
-        <span>({{cart()?.totalQuantity || 0}})</span>
+        <span>({{cartTotalCount()}})</span>
       </a>
     </nav>
   </div>

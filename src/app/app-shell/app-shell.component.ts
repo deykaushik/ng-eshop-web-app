@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+} from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AppStateService } from '../service/app-state.service';
 
@@ -12,6 +17,11 @@ import { AppStateService } from '../service/app-state.service';
 export class AppShellComponent {
   private _appState = inject(AppStateService);
 
-  cart = this._appState.cart;
   errorMessage = this._appState.errorMessage;
+
+  cartTotalCount = computed(() =>
+    this._appState
+      .cartItems()
+      .reduce((acc, curr) => (acc = acc + +curr.quantity!), 0)
+  );
 }
