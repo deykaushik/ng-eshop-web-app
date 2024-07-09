@@ -30,4 +30,10 @@ export class CartComponent {
   onUpdate(product: IProduct, quantity: number) {
     this._appState.addToCart(product, +quantity, true);
   }
+
+  onRemove(product: IProduct) {
+    const cartItems = this._appState.cartItems();
+    const updatedCartItems = cartItems.filter((item) => item.id !== product.id);
+    this._appState.updateCartItems(updatedCartItems);
+  }
 }
