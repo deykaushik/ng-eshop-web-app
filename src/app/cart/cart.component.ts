@@ -1,13 +1,7 @@
 import { AsyncPipe, NgIf, NgOptimizedImage } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AppStateService } from '../service/app-state.service';
-import { IProduct } from '../models/app.model';
+import { CartService, IProduct } from '../service/cart.service';
 
 @Component({
   selector: 'app-cart',
@@ -17,23 +11,16 @@ import { IProduct } from '../models/app.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CartComponent {
-  private _appState = inject(AppStateService);
+  private _cartService = inject(CartService);
 
-  cartItems = this._appState.cartItems;
-
-  totalPrice = computed(() =>
-    this._appState
-      .cartItems()
-      .reduce((acc, curr) => (acc = acc + curr.quantity! * curr.price), 0)
-  );
+  cartItems$ = this._cartService.cartItems$;
+  getCartTotal$ = this._cartService.getCartTotal$;
 
   onUpdate(product: IProduct, quantity: number) {
-    this._appState.addToCart(product, +quantity, true);
+    this._cartService.editCartItemQuantity(product, quantity);
   }
 
   onRemove(product: IProduct) {
-    const cartItems = this._appState.cartItems();
-    const updatedCartItems = cartItems.filter((item) => item.id !== product.id);
-    this._appState.updateCartItems(updatedCartItems);
+    this._cartService.editCartItemQuantity(product, 0);
   }
 }

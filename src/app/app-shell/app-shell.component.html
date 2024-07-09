@@ -8,18 +8,11 @@
          routerLinkActive="active"
          [routerLink]="'cart'">
         Cart
-        <span>({{cartTotalCount()}})</span>
+        <span>({{getCartItemsCount$ | async }})</span>
       </a>
     </nav>
   </div>
 </header>
-@if(errorMessage()){
-<div class="bg-red-200">
-  <div class="flex-1 w-full max-w-[1280px] p-5 mx-auto">
-    {{errorMessage()}}
-  </div>
-</div>
-}
 <main class="flex-1 w-full max-w-[1280px] px-5 py-10 mx-auto">
   <router-outlet></router-outlet>
 </main>
