@@ -6,7 +6,7 @@ export class AppStateService {
   readonly cartItems = signal<IProduct[]>([]);
   readonly errorMessage = signal<string | null>(null);
 
-  private _updateCartItems(products: IProduct[]) {
+  updateCartItems(products: IProduct[]) {
     this.cartItems.update(() => products.filter((item) => !!item.quantity));
   }
 
@@ -30,6 +30,6 @@ export class AppStateService {
       currCartItems.push({ ...product, quantity: +quantity });
     }
 
-    this._updateCartItems(currCartItems);
+    this.updateCartItems(currCartItems);
   }
 }
