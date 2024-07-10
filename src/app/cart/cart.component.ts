@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf, NgOptimizedImage } from '@angular/common';
+import { AsyncPipe, JsonPipe, NgIf, NgOptimizedImage } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CartService, IProduct } from '../service/cart.service';
@@ -16,8 +16,12 @@ export class CartComponent {
   cartItems$ = this._cartService.cartItems$;
   getCartTotal$ = this._cartService.getCartTotal$;
 
-  onUpdate(product: IProduct, quantity: number) {
-    this._cartService.editCartItemQuantity(product, quantity);
+  onInputBlur(input: FocusEvent, product: IProduct) {
+    const inputElem = input.target as HTMLInputElement;
+    if (+inputElem.value < 0) {
+      inputElem.value = '0';
+    }
+    this._cartService.editCartItemQuantity(product, +inputElem.value);
   }
 
   onRemove(product: IProduct) {

@@ -9,7 +9,8 @@ export interface IProduct {
   price: number;
   thumbnail: string;
   discountPercentage: number;
-  quantity?: number;
+  quantity: number;
+  total: number;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -18,13 +19,11 @@ export class CartService {
   cartItems$: Observable<IProduct[]> = this._cartItemsSubject.asObservable();
 
   getCartItemsCount$ = this.cartItems$.pipe(
-    map((items) => items.reduce((acc, item) => acc + item.quantity!, 0))
+    map((items) => items.reduce((acc, item) => acc + item.quantity, 0))
   );
 
   getCartTotal$ = this.cartItems$.pipe(
-    map((items) =>
-      items.reduce((acc, item) => acc + item.quantity! * item.price, 0)
-    )
+    map((items) => items.reduce((acc, item) => acc + item.total, 0))
   );
 
   private _updateCartItems(
@@ -40,10 +39,11 @@ export class CartService {
       } else {
         existingItem.quantity = existingItem.quantity! + 1;
       }
+      existingItem.total = existingItem.price * existingItem.quantity;
     } else {
-      cartItems.push({ ...product, quantity: 1 });
+      cartItems.push({ ...product, quantity: 1, total: product.price });
     }
-    return [...cartItems.filter((item) => !!item.quantity)];
+    return [...cartItems.filter((item) => item.quantity > 0)];
   }
 
   addToCart(product: IProduct) {

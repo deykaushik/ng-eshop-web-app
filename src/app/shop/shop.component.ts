@@ -17,14 +17,19 @@ export class ShopComponent {
 
   productsData$: Observable<IProduct[]> = this._eshopApi.getAllProducts().pipe(
     map((products) =>
-      products.map((product) => ({
-        id: product.id,
-        title: product.title,
-        rating: product.rating,
-        price: product.price,
-        thumbnail: product.thumbnail,
-        discountPercentage: product.discountPercentage,
-      }))
+      products.map(
+        (product) =>
+          ({
+            id: product.id,
+            title: product.title,
+            rating: product.rating,
+            price: product.price,
+            thumbnail: product.thumbnail,
+            discountPercentage: product.discountPercentage,
+            quantity: 0,
+            total: 0,
+          } as IProduct)
+      )
     )
   );
 
