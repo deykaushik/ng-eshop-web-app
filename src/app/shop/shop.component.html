@@ -1,5 +1,9 @@
+<input #inputElement
+       placeholder="Search By Product Title"
+       class="w-full h-[60px] p-4 border border-solid border-slate-300 mb-5" />
+
 <div class="grid grid-cols-2  md:grid-cols-3 lg:grid-cols-4 gap-5">
-  @for (product of productsData$ | async ; track product.id) {
+  @for (product of filteredList$ | async ; track product.id) {
   <div class="relative w-[fit-content] border border-solid border-slate-300 flex flex-col">
     <span
           class="absolute top-[20px] w-[70px] flex justify-center right-[20px] py-1 px-2 bg-purple-200 text-purple-600 pointer-events-none">-{{product.discountPercentage}}%</span>

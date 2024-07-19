@@ -21,7 +21,7 @@
                  #quantityInput="ngModel"
                  class="outline-none w-20 h-10 p-4 text-center border border-solid border-slate-300"
                  [ngModel]="product.quantity"
-                 (blur)="onInputBlur($event, product)" />
+                 (change)="onInputBlur($event, product)" />
         </div>
       </div>
       <div class="flex flex-col justify-between p-4">

@@ -16,7 +16,7 @@ export class CartComponent {
   cartItems$ = this._cartService.cartItems$;
   getCartTotal$ = this._cartService.getCartTotal$;
 
-  onInputBlur(input: FocusEvent, product: IProduct) {
+  onInputBlur(input: Event, product: IProduct) {
     const inputElem = input.target as HTMLInputElement;
     if (+inputElem.value < 0) {
       inputElem.value = '0';

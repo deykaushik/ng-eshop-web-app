@@ -16,13 +16,14 @@ export interface IProduct {
 @Injectable({ providedIn: 'root' })
 export class CartService {
   private _cartItemsSubject = new BehaviorSubject<IProduct[]>([]);
-  cartItems$: Observable<IProduct[]> = this._cartItemsSubject.asObservable();
+  readonly cartItems$: Observable<IProduct[]> =
+    this._cartItemsSubject.asObservable();
 
-  getCartItemsCount$ = this.cartItems$.pipe(
+  readonly getCartItemsCount$ = this.cartItems$.pipe(
     map((items) => items.reduce((acc, item) => acc + item.quantity, 0))
   );
 
-  getCartTotal$ = this.cartItems$.pipe(
+  readonly getCartTotal$ = this.cartItems$.pipe(
     map((items) => items.reduce((acc, item) => acc + item.total, 0))
   );
 
